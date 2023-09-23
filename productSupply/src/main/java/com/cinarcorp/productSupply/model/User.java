@@ -11,7 +11,8 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "tbl_users")
+@Table(name = "tbl_users",
+        uniqueConstraints = @UniqueConstraint(name=" emailId_unique",columnNames = "email_address"))
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

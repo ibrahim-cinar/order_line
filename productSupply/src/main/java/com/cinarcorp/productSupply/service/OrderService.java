@@ -108,6 +108,7 @@ public class OrderService {
                             .price(productRequest.getPrice())
                             .order(order)
                             .build();
+                    order.addProduct(product);
                     return product;
                 })
                 .collect(Collectors.toList());

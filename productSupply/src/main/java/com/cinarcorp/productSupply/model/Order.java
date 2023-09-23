@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +39,10 @@ public class Order {
     private int piece;
     private LocalDateTime orderDate;
     private boolean isComplete;
+    public void addProduct(Product product1){
+        if(product==null) product = new ArrayList<>();
+        product.add(product1);
+    }
 
     @Override
     public boolean equals(Object o) {
