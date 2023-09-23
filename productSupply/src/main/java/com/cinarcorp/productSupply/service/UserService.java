@@ -71,7 +71,8 @@ public class UserService {
                 .filter(order -> order.isComplete() == isComplete)
                 .collect(Collectors.toList());
         User userOrdered = new User();
-
+// User userOrdered = new User(user.getFirstName()
+             //                 ,user.getLastName(),user.getAddress(),user.getEmail(),filteredOrders);
         userOrdered.setFirstName(user.getFirstName());
         userOrdered.setLastName(user.getLastName());
         userOrdered.setAddress(user.getAddress());
