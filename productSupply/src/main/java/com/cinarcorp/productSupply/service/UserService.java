@@ -70,13 +70,15 @@ public class UserService {
         List<Order> filteredOrders = user.getOrder().stream()
                 .filter(order -> order.isComplete() == isComplete)
                 .collect(Collectors.toList());
-        User userOrdered = new User();
 
+         User userOrdered = new User(user.getFirstName(),user.getLastName()
+                 ,user.getAddress(),user.getEmail(),filteredOrders);
+        /* User userOrdered = new User();
         userOrdered.setFirstName(user.getFirstName());
         userOrdered.setLastName(user.getLastName());
         userOrdered.setAddress(user.getAddress());
         userOrdered.setEmail(user.getEmail());
-        userOrdered.setOrder(filteredOrders);
+        userOrdered.setOrder(filteredOrders);*/
 
         return userOrderedDtoConverter.convert(userOrdered);
     }
