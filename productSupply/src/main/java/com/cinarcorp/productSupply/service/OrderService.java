@@ -85,6 +85,9 @@ public class OrderService {
     public List<OrderDto> getAllOrder(){
         return orderRepository.findAll().stream().map(orderDtoConverter::convert).collect(Collectors.toList());
     }
+    protected List<Order> getAllOrders(){
+        return orderRepository.findAll();
+    }
     public OrderDto getOrderById(String id){
         var order = orderRepository.getOrderById(id);
         return orderDtoConverter.convert(order);
