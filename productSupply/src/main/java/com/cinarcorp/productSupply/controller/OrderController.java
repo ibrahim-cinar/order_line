@@ -32,6 +32,14 @@ public class OrderController {
     public ResponseEntity<List<OrderDto>> getOrderBiggerThanTotalPaid(@PathVariable int totalPaid){
         return ResponseEntity.ok(orderService.getOrderBiggerThanTotalPaid(totalPaid));
     }
+    @GetMapping("/complete/{isComplete}")
+    public ResponseEntity<List<OrderDto>> getAllOrderAndIsComplete(@PathVariable boolean isComplete) {
+        return ResponseEntity.ok(orderService.getAllOrderAndIsComplete(isComplete));
+    }
+    @GetMapping("/complete/{orderId}/{isComplete}")
+    public ResponseEntity<OrderDto> getOrderByIdAndIsComplete(@PathVariable String orderId,@PathVariable boolean isComplete) {
+        return ResponseEntity.ok(orderService.getOrderByIdAndIsComplete(orderId,isComplete));
+    }
     @PostMapping("/create")
     public ResponseEntity<OrderUserDto> createNewOrder(@RequestBody CreateUserOrderRequest createUserOrderRequest) {
         OrderUserDto orderUserDto = orderService.createNewOrder(createUserOrderRequest);

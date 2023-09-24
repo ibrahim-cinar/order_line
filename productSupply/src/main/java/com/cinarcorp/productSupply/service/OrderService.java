@@ -5,10 +5,12 @@ import com.cinarcorp.productSupply.dto.OrderDto;
 import com.cinarcorp.productSupply.dto.OrderUserDto;
 import com.cinarcorp.productSupply.dto.converter.OrderDtoConverter;
 import com.cinarcorp.productSupply.dto.converter.OrderUserDtoConverter;
+import com.cinarcorp.productSupply.exception.OrderNotFoundException;
 import com.cinarcorp.productSupply.model.Order;
 import com.cinarcorp.productSupply.model.Product;
 import com.cinarcorp.productSupply.model.User;
 import com.cinarcorp.productSupply.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -91,6 +93,16 @@ public class OrderService {
 
         return orderRepository.getOrderBiggerThanTotalPaid(totalPaid).stream()
                 .map(orderDtoConverter::convert).collect(Collectors.toList());
+    }
+    public List<OrderDto> getAllOrderAndIsComplete(boolean isComplete){
+        return orderRepository.findAll().stream().filter(x->x.isComplete()==isComplete)
+                .map(orderDtoConverter::convert).collect(Collectors.toList());
+    }
+    public OrderDto getOrderByIdAndIsComplete(String id ,boolean isComplete){
+        var order = orderRepository.getOrderById(id);
+        if(order.isComplete()==isComplete){
+            return orderDtoConverter.convert(order);
+        }else throw new OrderNotFoundException("order not found")  ;
     }
 
     public void deleteOrder(String id) {
