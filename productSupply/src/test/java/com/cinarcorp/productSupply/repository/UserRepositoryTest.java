@@ -50,13 +50,13 @@ class UserRepositoryTest {
 
     @Test
     public void getUserById(){
-        var user = userRepository.getUserById("64aed5d5-e239-42bd-8a00-902ceba8ff66");
+        var user = userRepository.getUserById("0d3f613c-34c3-43f1-affa-07d621ad4de7");
         System.out.println(user);
 
     }
     @Test
     public void getUserByEmail(){
-        var user = userRepository.getUserByEmail("a-a@outlook.com");
+        var user = userRepository.getUserByEmail("recepcinar@example.com");
         System.out.println(user);
 
     }

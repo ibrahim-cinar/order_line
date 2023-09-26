@@ -4,6 +4,7 @@ import com.cinarcorp.productSupply.dto.*;
 import com.cinarcorp.productSupply.dto.converter.UserDtoConverter;
 import com.cinarcorp.productSupply.dto.converter.UserOrderedDtoConverter;
 import com.cinarcorp.productSupply.exception.EmailAlreadyExistsException;
+import com.cinarcorp.productSupply.exception.OrderNotFoundException;
 import com.cinarcorp.productSupply.exception.UserNotFoundException;
 import com.cinarcorp.productSupply.model.Order;
 import com.cinarcorp.productSupply.model.Product;
@@ -55,6 +56,13 @@ public class UserService {
     }
 
     public UserOrderedDto getUserByEmail(String email) {
+        var user = findUserByEmail(email);
+
+        if (user == null) {
+            // Kullanıcı bulunamadı, 404 Not Found yanıtı döndürün.
+            // Örneğin, bir özel istisna sınıfı kullanabilirsiniz.
+            throw new UserNotFoundException("Kullanıcı bulunamadı: " + email);
+        }
         return userOrderedDtoConverter.convert(findUserByEmail(email));
     }
 
@@ -64,34 +72,56 @@ public class UserService {
 
     public UserOrderedDto getUserOrderByEmailAndIsComplete(String emailId, boolean isComplete) {
         var user = userRepository.getUserByEmail(emailId);
+
         if (user == null) {
-            return null;
+            // Kullanıcı bulunamadı, 404 Not Found yanıtı döndürün.
+            // Örneğin, bir özel istisna sınıfı kullanabilirsiniz.
+            throw new UserNotFoundException("Kullanıcı bulunamadı: " + emailId);
         }
+
+        if (user.getOrder() == null || user.getOrder().isEmpty()) {
+            // Kullanıcının siparişleri yok, 404 Not Found yanıtı döndürün.
+            // Örneğin, bir özel istisna sınıfı kullanabilirsiniz.
+            throw new OrderNotFoundException("Kullanıcının siparişleri bulunamadı: " + emailId);
+        }
+
         List<Order> filteredOrders = user.getOrder().stream()
                 .filter(order -> order.isComplete() == isComplete)
                 .collect(Collectors.toList());
 
-         User userOrdered = new User(user.getFirstName(),user.getLastName()
-                 ,user.getAddress(),user.getEmail(),filteredOrders);
-        /* User userOrdered = new User();
-        userOrdered.setFirstName(user.getFirstName());
-        userOrdered.setLastName(user.getLastName());
-        userOrdered.setAddress(user.getAddress());
-        userOrdered.setEmail(user.getEmail());
-        userOrdered.setOrder(filteredOrders);*/
+        if (filteredOrders.isEmpty()) {
+            // Filtrelenmiş sipariş yok, 404 Not Found yanıtı döndürün.
+            // Örneğin, bir özel istisna sınıfı kullanabilirsiniz.
+            throw new OrderNotFoundException("Kullanıcının belirtilen durumda siparişleri bulunamadı: " + emailId);
+        }
+
+        User userOrdered = new User(user.getFirstName(), user.getLastName(),
+                user.getAddress(), user.getEmail(), filteredOrders);
 
         return userOrderedDtoConverter.convert(userOrdered);
     }
 
-
     public UserOrderedDto getUserOrderByIdAndIsComplete(String id, boolean isComplete) {
         var user = userRepository.getUserById(id);
         if (user == null) {
-            return null;
+            // Kullanıcı bulunamadı, 404 Not Found yanıtı döndürün.
+            // Örneğin, bir özel istisna sınıfı kullanabilirsiniz.
+            throw new UserNotFoundException("Kullanıcı bulunamadı: " + id);
+        }
+
+        if (user.getOrder() == null || user.getOrder().isEmpty()) {
+            // Kullanıcının siparişleri yok, 404 Not Found yanıtı döndürün.
+            // Örneğin, bir özel istisna sınıfı kullanabilirsiniz.
+            throw new OrderNotFoundException("Kullanıcının siparişleri bulunamadı: " +  user.getFirstName() + user.getLastName());
         }
         List<Order> filteredOrders = user.getOrder().stream()
                 .filter(order -> order.isComplete() == isComplete)
                 .collect(Collectors.toList());
+        if (filteredOrders.isEmpty()) {
+            // Filtrelenmiş sipariş yok, 404 Not Found yanıtı döndürün.
+            // Örneğin, bir özel istisna sınıfı kullanabilirsiniz.
+            throw new OrderNotFoundException("Kullanıcının belirtilen durumda siparişleri bulunamadı: " + user.getFirstName() + user.getLastName());
+        }
 
         User userOrdered = new User();
 

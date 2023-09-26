@@ -57,7 +57,19 @@ public class Order {
         return Objects.hash(id, user, product, totalPaid, piece, orderDate, isComplete);
     }
 
-    public Order(User user,int totalPaid, int piece, LocalDateTime orderDate,boolean isComplete ) {
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", totalPaid=" + totalPaid +
+                ", piece=" + piece +
+                ", orderDate=" + orderDate +
+                ", isComplete=" + isComplete +
+                ", product=" + product +
+                '}';
+    }
+
+    public Order(User user, int totalPaid, int piece, LocalDateTime orderDate, boolean isComplete ) {
         this.user=user;
         this.totalPaid = totalPaid;
         this.piece = piece;
@@ -82,15 +94,5 @@ public class Order {
         this.isComplete = isComplete;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id='" + id + '\'' +
-                ", product=" + product +
-                ", totalPaid=" + totalPaid +
-                ", piece=" + piece +
-                ", orderDate=" + orderDate +
-                ", isComplete=" + isComplete +
-                '}';
-    }
+
 }
