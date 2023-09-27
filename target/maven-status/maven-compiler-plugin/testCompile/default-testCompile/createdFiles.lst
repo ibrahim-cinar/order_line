@@ -1,0 +1,4 @@
+com\cinarcorp\orderLine\repository\OrderRepositoryTest.class
+com\cinarcorp\orderLine\OrderLineApplicationTests.class
+com\cinarcorp\orderLine\repository\UserRepositoryTest.class
+com\cinarcorp\orderLine\repository\ProductRepositoryTest.class
